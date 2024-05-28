@@ -1,0 +1,4 @@
+server_host: "localhost"
+server_port: 8081
+database_connection_string: ""
+vk_token: ""
