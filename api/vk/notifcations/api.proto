@@ -3,7 +3,7 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 
 package notifications.v1;
-option go_package = "github.com/shagiradgers/vk-notification-api/pkg/notification;notification";
+option go_package = "github.com/shagiradgers/vk-notification-api/pkg/notification;vk";
 
 
 service vk_notifications_api {
