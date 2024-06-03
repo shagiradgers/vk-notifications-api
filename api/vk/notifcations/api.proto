@@ -16,6 +16,8 @@ service vk_notifications_api {
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
   rpc EditUser(EditUserRequest) returns (EditUserResponse) {}
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+
+  rpc GetGroups(GetGroupsRequest) returns (GetGroupsResponse) {}
 }
 
 enum NotificationStatus {
@@ -157,4 +159,12 @@ message CreateUserRequest {
 
 message CreateUserResponse {
   User user = 1;
+}
+
+message GetGroupsRequest {
+}
+
+message GetGroupsResponse {
+  repeated string groups = 1;
+  int64 count = 4;
 }

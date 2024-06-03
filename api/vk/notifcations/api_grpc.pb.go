@@ -30,6 +30,7 @@ type VkNotificationsApiClient interface {
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	EditUser(ctx context.Context, in *EditUserRequest, opts ...grpc.CallOption) (*EditUserResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error)
 }
 
 type vkNotificationsApiClient struct {
@@ -112,6 +113,15 @@ func (c *vkNotificationsApiClient) CreateUser(ctx context.Context, in *CreateUse
 	return out, nil
 }
 
+func (c *vkNotificationsApiClient) GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error) {
+	out := new(GetGroupsResponse)
+	err := c.cc.Invoke(ctx, "/notifications.v1.vk_notifications_api/GetGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VkNotificationsApiServer is the server API for VkNotificationsApi service.
 // All implementations must embed UnimplementedVkNotificationsApiServer
 // for forward compatibility
@@ -124,6 +134,7 @@ type VkNotificationsApiServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	EditUser(context.Context, *EditUserRequest) (*EditUserResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error)
 	mustEmbedUnimplementedVkNotificationsApiServer()
 }
 
@@ -154,6 +165,9 @@ func (UnimplementedVkNotificationsApiServer) EditUser(context.Context, *EditUser
 }
 func (UnimplementedVkNotificationsApiServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedVkNotificationsApiServer) GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroups not implemented")
 }
 func (UnimplementedVkNotificationsApiServer) mustEmbedUnimplementedVkNotificationsApiServer() {}
 
@@ -312,6 +326,24 @@ func _VkNotificationsApi_CreateUser_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VkNotificationsApi_GetGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VkNotificationsApiServer).GetGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/notifications.v1.vk_notifications_api/GetGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VkNotificationsApiServer).GetGroups(ctx, req.(*GetGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VkNotificationsApi_ServiceDesc is the grpc.ServiceDesc for VkNotificationsApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -350,6 +382,10 @@ var VkNotificationsApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUser",
 			Handler:    _VkNotificationsApi_CreateUser_Handler,
+		},
+		{
+			MethodName: "GetGroups",
+			Handler:    _VkNotificationsApi_GetGroups_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

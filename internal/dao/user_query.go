@@ -40,6 +40,7 @@ type UserQuery interface {
 		offset uint64,
 		fields ...string,
 	) ([]UserTable, error)
+	GetGroups(ctx context.Context) ([]string, error)
 }
 
 type userQuery struct {
@@ -154,6 +155,17 @@ func (q *userQuery) GetUserByFilter(
 	query = query.
 		Limit(limit).
 		Offset(offset)
+
+	err := q.db.SelectX(ctx, &dest, query)
+	return dest, err
+}
+
+func (q *userQuery) GetGroups(ctx context.Context) ([]string, error) {
+	var dest []string
+
+	query := qb().
+		Select("DISTINCT user_group").
+		From(userTableName)
 
 	err := q.db.SelectX(ctx, &dest, query)
 	return dest, err

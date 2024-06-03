@@ -25,6 +25,9 @@ func (d *dao) NewNotificationQuery() NotificationQuery {
 }
 
 func (d *dao) Close() error {
+	if d.db == nil {
+		return nil
+	}
 	return d.db.Close()
 }
 
