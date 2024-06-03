@@ -4,7 +4,7 @@
 // - protoc             v4.25.2
 // source: api/vk/notifcations/api.proto
 
-package notification
+package vk
 
 import (
 	context "context"
